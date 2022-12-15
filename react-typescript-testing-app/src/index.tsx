@@ -24,3 +24,25 @@ ReactDOM.render(
 );
 
 registerServiceWorker();
+
+const obj1 = {
+  name: "Bob",
+  callName: function() {
+    console.log(`hello, I'm ${this.name}!`);
+  }
+};
+
+obj1.callName();
+
+const obj2 = {
+  name: "Alice",
+  callName() {
+    // callName: () => {と、Arrow Functionにはできない。
+    // なぜなら、このArrow Function内のthisは上のレベルのthisに左右されるが、
+    // この場合だとthisはトップレベルまで参照しにいってしまうから。
+    // 通常の関数宣言であれば、実行時のcontextがthisになるため問題ない。
+    console.log(`hello, I'm ${this.name}!`);
+  }
+};
+
+obj2.callName();
