@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  prisma:
+    build: .
+    container_name: prisma
+    depends_on:
+      - db_mysql
+    volumes:
+      - ./prisma/src:/prisma/src
+    environment:
+      WAIT_HOSTS: db_mysql:3306
+  db_mysql:
+    image: "mysql:8-debian"
+    platform: "linux/amd64"
+    container_name: db_mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql:cached
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: dev_password
