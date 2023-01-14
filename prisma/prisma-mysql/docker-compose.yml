@@ -6,7 +6,7 @@ services:
     depends_on:
       - db_mysql
     volumes:
-      - ./prisma/src:/prisma/src
+      - ./prisma:/prisma
     environment:
       WAIT_HOSTS: db_mysql:3306
   db_mysql:
