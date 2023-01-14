@@ -15,9 +15,11 @@ services:
     container_name: db_mysql
     volumes:
       - ./mysql/data:/var/lib/mysql:cached
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:cached
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: dev_user
-      MYSQL_PASSWORD: dev_password
+      MYSQL_DATABASE: developmentdb
+      MYSQL_USER: prismauser
+      MYSQL_PASSWORD: prismapassword
