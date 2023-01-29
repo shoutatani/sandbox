@@ -15,6 +15,7 @@ model Post {
   published Boolean  @default(false)
   authorId  Int
   author    User     @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_ibfk_1")
+  tags      Tag[]
 
   @@index([authorId], map: "authorId")
 }
@@ -32,4 +33,10 @@ model User {
   email   String   @unique(map: "email") @db.VarChar(255)
   posts   Post[]
   profile Profile?
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[]
 }

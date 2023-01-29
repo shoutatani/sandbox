@@ -1,5 +1,3 @@
-yarn run v1.22.19
-$ /prisma/node_modules/.bin/prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script
 -- CreateTable
 CREATE TABLE `Post` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -38,5 +36,3 @@ ALTER TABLE `Post` ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`authorId`) REFEREN
 
 -- AddForeignKey
 ALTER TABLE `Profile` ADD CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-Done in 0.35s.
