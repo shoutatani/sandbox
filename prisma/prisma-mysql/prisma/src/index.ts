@@ -3,6 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.profile.deleteMany({});
+  await prisma.post.deleteMany({});
+  await prisma.user.deleteMany({});
+
   await prisma.user.create({
     data: {
       name: "Alice",
@@ -15,7 +19,6 @@ async function main() {
       },
     },
   });
-
   const allUsers = await prisma.user.findMany({
     include: {
       posts: true,
@@ -25,7 +28,7 @@ async function main() {
   console.dir(allUsers, { depth: null });
 
   const post = await prisma.post.update({
-    where: { id: 1 },
+    where: { id: allUsers[0].posts[0].id },
     data: { published: true },
   });
   console.log(post);
