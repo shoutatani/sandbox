@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  graphql:
+    build: .
+    container_name: apollo
+    depends_on:
+      - db
+    volumes:
+      - ./graphql:/graphql
+    ports:
+      - "4000:4000"
+    environment:
+      WAIT_HOSTS: db:3306
+  db:
+    image: "mysql:8-debian"
+    platform: "linux/amd64"
+    container_name: mysql8
+    volumes:
+      - ./mysql/data:/var/lib/mysql:cached
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:cached
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: developmentdb
+      MYSQL_USER: developmentuser
+      MYSQL_PASSWORD: developmentpassword

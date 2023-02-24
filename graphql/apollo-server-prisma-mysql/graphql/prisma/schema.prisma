@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int     @id @default(autoincrement())
+  githubLogin String  @db.VarChar(255)
+  name        String  @db.VarChar(255)
+  photos      Photo[]
+  tags        Tag[]
+
+  @@map("users")
+}
+
+model Photo {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  description String? @db.Text
+  category    String  @db.VarChar(255)
+  userId      Int
+  user        User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  created     String  @db.VarChar(255)
+  tags        Tag[]
+
+  @@map("photos")
+}
+
+model Tag {
+  photoId Int
+  photo   Photo @relation(fields: [photoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([photoId, userId])
+  @@map("tags")
+}
