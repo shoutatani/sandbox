@@ -5,6 +5,7 @@ export const typeDefs = `#graphql
     id: ID!
     name: String
     avatar: String
+    githubLogin: String
     postedPhotos: [Photo!]!
     inPhotos: [Photo!]!
   }
@@ -28,20 +29,28 @@ export const typeDefs = `#graphql
     created: DateTime!
   }
 
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   type Query {
     totalPhotos: Int!
     allPhotos(after: DateTime): [Photo!]!
     totalUsers: Int!
+    me: User
   }
 
   input PostPhotoInput {
     name: String!
     description: String
     category: PhotoCategory=PORTRAIT
-    userId: Int!
   }
 
   type Mutation {
     postPhoto(input: PostPhotoInput!): Photo!
+    githubAuth(code: String!): AuthPayload!
+    addFakeUsers(count: Int = 1): [User!]!
+    fakeUserAuth(githubLogin: ID!): AuthPayload!
   }
 `;

@@ -6,9 +6,9 @@ cd /graphql
 echo "****** yarn install ******"
 yarn install
 
-echo "****** reset dev db... ******"
+echo "****** reset build... ******"
 yarn build
-yarn reset-dev-db
+yarn db:migrate
 
 echo "****** start watching... ******"
 yarn watch

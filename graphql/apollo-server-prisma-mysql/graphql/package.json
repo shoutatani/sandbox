@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "db:migrate": "prisma migrate dev",
     "build:prisma": "prisma generate",
     "build:ts": "tsc",
     "build": "npm-run-all build:*",
@@ -16,6 +17,7 @@
   "dependencies": {
     "@apollo/server": "^4.2.2",
     "@prisma/client": "^4.10.1",
+    "express": "^4.18.2",
     "graphql": "^16.6.0",
     "npm-run-all": "^4.1.5"
   },
@@ -25,7 +27,8 @@
     "prisma": "^4.10.1",
     "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "undici": "^5.20.0"
   },
   "prisma": {
     "seed": "node --loader ts-node/esm prisma/seed.ts"

@@ -9,8 +9,10 @@ datasource db {
 
 model User {
   id          Int     @id @default(autoincrement())
-  githubLogin String  @db.VarChar(255)
+  githubLogin String  @unique @db.VarChar(255)
+  githubToken String? @db.VarChar(255)
   name        String  @db.VarChar(255)
+  avatar      String? @db.VarChar(255)
   photos      Photo[]
   tags        Tag[]
 

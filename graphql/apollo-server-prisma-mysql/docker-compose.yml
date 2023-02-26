@@ -11,6 +11,8 @@ services:
       - "4000:4000"
     environment:
       WAIT_HOSTS: db:3306
+      GRAPHQL_LEARNING_GITHUB_CLIENT_ID:
+      GRAPHQL_LEARNING_GITHUB_CLIENT_SECRET:
   db:
     image: "mysql:8-debian"
     platform: "linux/amd64"

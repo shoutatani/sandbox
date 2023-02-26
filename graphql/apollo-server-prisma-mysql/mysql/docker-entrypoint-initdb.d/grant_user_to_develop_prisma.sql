@@ -1,1 +1,1 @@
-GRANT CREATE, ALTER, DROP, REFERENCES ON *.* TO developmentuser;
+GRANT CREATE, ALTER, DROP, INDEX, REFERENCES ON *.* TO developmentuser;
