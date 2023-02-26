@@ -1,24 +1,34 @@
 version: "3.9"
 services:
-  graphql:
-    build: .
-    container_name: apollo
+  backend:
+    build: ./backend
+    container_name: graphql
     depends_on:
       - db
     volumes:
-      - ./graphql:/graphql
+      - ./backend:/graphql
+      - backend-node_modules:/graphql/node_modules
     ports:
       - "4000:4000"
     environment:
       WAIT_HOSTS: db:3306
       GRAPHQL_LEARNING_GITHUB_CLIENT_ID:
       GRAPHQL_LEARNING_GITHUB_CLIENT_SECRET:
+  frontend:
+    build: ./frontend
+    container_name: react
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/frontend
+      - frontend-node_modules:/frontend/node_modules
+    ports:
+      - "3000:3000"
   db:
     image: "mysql:8-debian"
     platform: "linux/amd64"
     container_name: mysql8
     volumes:
-      - ./mysql/data:/var/lib/mysql:cached
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:cached
     ports:
       - "3306:3306"
@@ -27,3 +37,6 @@ services:
       MYSQL_DATABASE: developmentdb
       MYSQL_USER: developmentuser
       MYSQL_PASSWORD: developmentpassword
+volumes:
+  backend-node_modules:
+  frontend-node_modules:
