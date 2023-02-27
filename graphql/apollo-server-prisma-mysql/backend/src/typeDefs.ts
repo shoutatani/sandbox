@@ -38,6 +38,7 @@ export const typeDefs = `#graphql
     totalPhotos: Int!
     allPhotos(after: DateTime): [Photo!]!
     totalUsers: Int!
+    allUsers: [User!]!
     me: User
   }
 

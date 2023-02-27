@@ -24,6 +24,8 @@ services:
       - frontend-node_modules:/frontend/node_modules
     ports:
       - "3000:3000"
+    environment:
+      - REACT_APP_GRAPHQL_LEARNING_GITHUB_CLIENT_ID=${GRAPHQL_LEARNING_GITHUB_CLIENT_ID}
   db:
     image: "mysql:8-debian"
     platform: "linux/amd64"

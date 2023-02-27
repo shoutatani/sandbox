@@ -16,6 +16,7 @@ export const resolvers = {
       );
     },
     totalUsers: (_parent, _args, { db }: MyContext) => db.user.count(),
+    allUsers: (_parent, _args, { db }: MyContext) => db.user.findMany({}),
     me: (_parent, _args, { currentUser }: MyContext) => currentUser,
   },
   Mutation: {
