@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 import React from "react";
-import "./App.css";
 import { AuthorizedUser } from "./AuthorizedUser";
 import { Users } from "./Users";
 

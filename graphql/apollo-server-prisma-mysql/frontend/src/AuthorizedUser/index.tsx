@@ -9,7 +9,7 @@ export const AuthorizedUser: React.FC = () => {
     navigate("/", { replace: true });
   }, []);
 
-  const { loading, me, signingIn } = useAuthorizedUser({
+  const { loading, me, signingIn, onLogout } = useAuthorizedUser({
     onAuthorizationComplete,
   });
 
@@ -19,7 +19,7 @@ export const AuthorizedUser: React.FC = () => {
   };
 
   const logout = useCallback(() => {
-    localStorage.removeItem("token");
+    onLogout();
     navigate("/", { replace: true });
   }, []);
 

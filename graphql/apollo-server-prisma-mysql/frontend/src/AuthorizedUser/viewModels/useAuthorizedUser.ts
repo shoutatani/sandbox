@@ -8,7 +8,7 @@ export const useAuthorizedUser = ({
 }: {
   onAuthorizationComplete: () => void;
 }) => {
-  const { loading, me, refetchUsers } = useUsers();
+  const { loading, me, refetchUsers, client } = useUsers();
   const [signingIn, setSigningIn] = useState(false);
 
   const authorizationComplete = (data: {
@@ -34,9 +34,14 @@ export const useAuthorizedUser = ({
     }
   }, [githubAuthMutation]);
 
+  const onLogout = () => {
+    client.resetStore();
+  };
+
   return {
     loading,
     me,
     signingIn,
+    onLogout,
   };
 };
