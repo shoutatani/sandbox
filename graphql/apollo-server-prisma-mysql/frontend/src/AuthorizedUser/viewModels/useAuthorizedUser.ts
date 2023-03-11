@@ -1,5 +1,6 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { ROOT_QUERY } from "../../App";
 import { useUsers } from "../../Users/viewModels/useUsers";
 import { useGithubAuthMutation } from "./useGithubAuthMutation";
 
@@ -8,8 +9,9 @@ export const useAuthorizedUser = ({
 }: {
   onAuthorizationComplete: () => void;
 }) => {
-  const { loading, me, refetchUsers, client } = useUsers();
+  const { loading, me, refetchUsers } = useUsers();
   const [signingIn, setSigningIn] = useState(false);
+  const client = useApolloClient();
 
   const authorizationComplete = (data: {
     githubAuth: {
@@ -35,6 +37,10 @@ export const useAuthorizedUser = ({
   }, [githubAuthMutation]);
 
   const onLogout = () => {
+    // localStorage.removeItem("token");
+    // const data: any = client.cache.readQuery({ query: ROOT_QUERY });
+    // const newData = { ...data, me: null };
+    // client.cache.writeQuery({ query: ROOT_QUERY, data: newData });
     client.resetStore();
   };
 

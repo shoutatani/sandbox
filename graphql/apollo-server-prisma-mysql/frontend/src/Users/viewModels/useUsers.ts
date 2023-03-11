@@ -8,7 +8,7 @@ export type User = {
 };
 
 export const useUsers = () => {
-  const { loading, error, data, refetch, client } = useQuery<{
+  const { loading, error, data, refetch } = useQuery<{
     totalUsers: number;
     allUsers: User[];
     me?: User;
@@ -21,6 +21,5 @@ export const useUsers = () => {
     allUsers: data?.allUsers,
     refetchUsers: refetch,
     me: data?.me,
-    client,
   };
 };
