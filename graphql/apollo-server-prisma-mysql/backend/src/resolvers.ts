@@ -20,7 +20,11 @@ export const resolvers = {
     me: (_parent, _args, { currentUser }: MyContext) => currentUser,
   },
   Mutation: {
-    postPhoto: async (_parent, args, { db, currentUser }: MyContext) => {
+    postPhoto: async (
+      _parent,
+      args,
+      { db, currentUser, pubsub }: MyContext
+    ) => {
       if (!currentUser) {
         throw new Error("only an authorized user can post a photo");
       }
@@ -34,6 +38,9 @@ export const resolvers = {
       const createdPhoto = await db.photo.create({
         data: newPhoto,
       });
+
+      pubsub.publish("new-photo", { newPhoto: createdPhoto });
+
       return createdPhoto;
     },
     githubAuth: async (_parent, { code }, { db }: MyContext) => {
@@ -171,4 +178,10 @@ export const resolvers = {
     serialize: (value: any) => new Date(value).toISOString(),
     parseLiteral: (ast: StringValueNode) => new Date(ast.value),
   }),
+  Subscription: {
+    newPhoto: {
+      subscribe: (parent, args, { pubsub }: MyContext) =>
+        pubsub.asyncIterator("new-photo"),
+    },
+  },
 };

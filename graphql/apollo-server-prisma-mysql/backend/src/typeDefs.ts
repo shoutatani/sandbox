@@ -54,4 +54,8 @@ export const typeDefs = `#graphql
     addFakeUsers(count: Int = 1): [User!]!
     fakeUserAuth(githubLogin: ID!): AuthPayload!
   }
+
+  type Subscription {
+    newPhoto: Photo!
+  }
 `;
