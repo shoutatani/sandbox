@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFakeUsers } from "./viewModels/useFakeUsers";
 import { useUsers } from "./viewModels/useUsers";
 
 export const Users: React.FC = () => {
-  const { loading, error, totalUsers, allUsers, refetchUsers } = useUsers();
+  const {
+    loading,
+    error,
+    totalUsers,
+    allUsers,
+    refetchUsers,
+    subscribeToNewUsers,
+  } = useUsers();
   const { addFakeUsers } = useFakeUsers();
+  useEffect(() => {
+    subscribeToNewUsers();
+  }, []);
 
   if (loading || !allUsers) {
     return <p>loading users...</p>;
