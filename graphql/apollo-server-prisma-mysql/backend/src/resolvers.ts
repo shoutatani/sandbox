@@ -43,7 +43,7 @@ export const resolvers = {
 
       return createdPhoto;
     },
-    githubAuth: async (_parent, { code }, { db }: MyContext) => {
+    githubAuth: async (_parent, { code }, { db, pubsub }: MyContext) => {
       const { message, access_token, avatar_url, login, name } =
         await authorizeWithGitHub({
           client_id: process.env["GRAPHQL_LEARNING_GITHUB_CLIENT_ID"],
@@ -62,6 +62,10 @@ export const resolvers = {
         avatar: avatar_url,
       };
 
+      const isAlreadyAuthorized = await db.user.findFirst({
+        where: { githubLogin: login },
+      });
+
       const user = await db.user.upsert({
         create: upsertParameter,
         update: upsertParameter,
@@ -70,9 +74,13 @@ export const resolvers = {
         },
       });
 
+      if (!isAlreadyAuthorized) {
+        pubsub.publish("new-user", { newUser: user });
+      }
+
       return { user, token: access_token };
     },
-    addFakeUsers: async (root, { count }, { db }: MyContext) => {
+    addFakeUsers: async (root, { count }, { db, pubsub }: MyContext) => {
       const randomUserApi = `https://randomuser.me/api/?results=${count}`;
 
       const { results } = await fetch(randomUserApi).then(
@@ -109,13 +117,19 @@ export const resolvers = {
         data: users,
       });
 
-      return await db.user.findMany({
+      const createdUsers = await db.user.findMany({
         where: {
           githubLogin: {
             in: users.map((user) => user.githubLogin),
           },
         },
       });
+
+      createdUsers.forEach((createdUser) =>
+        pubsub.publish("new-user", { newUser: createdUser })
+      );
+
+      return createdUsers;
     },
     fakeUserAuth: async (parent, { githubLogin }, { db }: MyContext) => {
       const user = await db.user.findFirst({
@@ -182,6 +196,10 @@ export const resolvers = {
     newPhoto: {
       subscribe: (parent, args, { pubsub }: MyContext) =>
         pubsub.asyncIterator("new-photo"),
+    },
+    newUser: {
+      subscribe: (parent, args, { pubsub }: MyContext) =>
+        pubsub.asyncIterator("new-user"),
     },
   },
 };

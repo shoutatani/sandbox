@@ -57,5 +57,6 @@ export const typeDefs = `#graphql
 
   type Subscription {
     newPhoto: Photo!
+    newUser: User!
   }
 `;
